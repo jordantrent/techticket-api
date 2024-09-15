@@ -2,7 +2,6 @@ package com.jt.techticket.rest;
 
 import com.jt.techticket.dao.CustomerRepository;
 import com.jt.techticket.entity.Customer;
-import com.jt.techticket.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
