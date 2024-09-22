@@ -1,14 +1,12 @@
 package com.jt.techticket.entity;
-
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name="customer")
 public class Customer {
 
-    // define fields
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CustomerId")
@@ -26,18 +24,25 @@ public class Customer {
     @Column(name = "Email")
     private String email;
 
-    @Column(name = "CreatedDate")
-    private LocalDate createdDate;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Ticket> tickets;
 
-    public Customer(String name, String address, String phone, String email, LocalDate createdDate) {
+    public Customer(String name, String address, String phone, String email) {
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.email = email;
-        this.createdDate = createdDate;
     }
 
     public Customer() {
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     public int getId() {
@@ -80,10 +85,6 @@ public class Customer {
         this.email = email;
     }
 
-    public LocalDate getCreatedDate() {
-        return createdDate;
-    }
-
     @Override
     public String toString() {
         return "Customer{" +
@@ -92,7 +93,6 @@ public class Customer {
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
-                ", createdDate=" + createdDate +
                 '}';
     }
 }

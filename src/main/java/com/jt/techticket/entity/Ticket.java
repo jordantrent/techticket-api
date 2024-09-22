@@ -1,5 +1,7 @@
 package com.jt.techticket.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -12,26 +14,37 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="TicketID")
     private int id;
+
     @Column(name="IssueDescription")
     private String issueDescription;
+
     @Column(name="Status")
     private String status;
+
     @Column(name="CreatedDate")
     private LocalDate createdDate;
+
     @Column(name="ResolvedDate")
     private LocalDate resolvedDate;
+
     @Column(name="ImagePath")
     private String imagePath;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name="employeeticket", joinColumns = @JoinColumn(name = "TicketID"), inverseJoinColumns = @JoinColumn(name = "EmployeeID"))
     private List<Employee> employees;
 
     public Ticket() {}
-    public Ticket(String issueDescription, String status, LocalDate createdDate, String imagePath) {
+    @JsonCreator
+    public Ticket(@JsonProperty("issueDescription")String issueDescription, @JsonProperty("status")String status,@JsonProperty("imagePath") String imagePath) {
         this.issueDescription = issueDescription;
         this.status = status;
-        this.createdDate = createdDate;
+        this.createdDate = LocalDate.now();
         this.imagePath = imagePath;
     }
 
@@ -69,10 +82,6 @@ public class Ticket {
 
     public LocalDate getCreatedDate() {
         return createdDate;
-    }
-
-    public void setCreatedDate(LocalDate createdDate) {
-        this.createdDate = createdDate;
     }
 
     public LocalDate getResolvedDate() {

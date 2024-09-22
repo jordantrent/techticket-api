@@ -28,6 +28,11 @@ public class TicketRestController {
         return ticketRepository.save(ticket);
     }
 
+    @GetMapping("/tickets")
+    public List<Ticket> getAllTickets() {
+        return ticketRepository.findAll();
+    }
+
 
     @PostMapping("/tickets/{ticketId}/assign")
     public ResponseEntity<Ticket> assignEmployeesToTicket(
