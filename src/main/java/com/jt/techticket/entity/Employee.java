@@ -1,9 +1,10 @@
 package com.jt.techticket.entity;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name="employee")
+@Table(name="employees")
 public class Employee {
 
     @Id
@@ -20,6 +21,8 @@ public class Employee {
     private String phone;
     @Column(name = "email")
     private String email;
+    @ManyToMany(mappedBy = "employees", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Ticket> tickets;
 
     public Employee(String firstName, String lastName, String position, String phone, String email) {
         this.firstName = firstName;

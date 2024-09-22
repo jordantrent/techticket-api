@@ -1,17 +1,16 @@
 package com.jt.techticket.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
-
+import java.util.List;
+@Entity
+@Table(name="tickets")
 public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name="TicketID")
     private int id;
     @Column(name="IssueDescription")
     private String issueDescription;
@@ -23,6 +22,10 @@ public class Ticket {
     private LocalDate resolvedDate;
     @Column(name="ImagePath")
     private String imagePath;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinTable(name="employeeticket", joinColumns = @JoinColumn(name = "TicketID"), inverseJoinColumns = @JoinColumn(name = "EmployeeID"))
+    private List<Employee> employees;
 
     public Ticket() {}
     public Ticket(String issueDescription, String status, LocalDate createdDate, String imagePath) {
@@ -34,6 +37,14 @@ public class Ticket {
 
     public int getId() {
         return id;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 
     public void setId(int id) {
