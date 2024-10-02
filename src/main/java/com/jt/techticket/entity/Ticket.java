@@ -31,7 +31,7 @@ public class Ticket {
     private String imagePath;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
+    @JoinColumn(name = "CustomerID", nullable = false)
     private Customer customer;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
