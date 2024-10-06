@@ -43,7 +43,7 @@ public class TicketRestController {
         return ResponseEntity.ok(updatedTicket);
     }
 
-    @GetMapping("/tickets/{ticketId}/")
+    @GetMapping("/tickets/{ticketId}")
     public ResponseEntity<List<Employee>> getEmployeesForTicket(@PathVariable int ticketId) {
         List<Employee> employees = ticketService.getEmployeesForTicket(ticketId);
         return ResponseEntity.ok(employees);

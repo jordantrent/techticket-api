@@ -47,7 +47,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public Ticket assignEmployeesToTicket(int ticketId, List<Integer> employeeIds) {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Did not find customer id - " + ticketId));
+                .orElseThrow(() -> new RuntimeException("Did not find ticket id - " + ticketId));
 
         List<Employee> employees = employeeRepository.findAllById(employeeIds);
         ticket.getEmployees().addAll(employees);

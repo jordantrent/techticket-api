@@ -19,7 +19,7 @@ public class Employee {
     private String position;
     @Column(name = "Phone")
     private String phone;
-    @Column(name = "email")
+    @Column(name = "Email")
     private String email;
     @ManyToMany(mappedBy = "employees", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private List<Ticket> tickets;
