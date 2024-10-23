@@ -13,6 +13,6 @@ public interface TicketService {
     public void deleteById(int id);
     public Ticket assignEmployeesToTicket(int ticketId, List<Integer> employeeIds);
     public List<Employee> getEmployeesForTicket(int ticketId);
-
+    public List<Ticket> getTicketsForEmployee(int employeeId);
 
 }

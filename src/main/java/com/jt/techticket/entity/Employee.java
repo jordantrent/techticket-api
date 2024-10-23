@@ -1,5 +1,6 @@
 package com.jt.techticket.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -36,6 +37,11 @@ public class Employee {
 
     public int getId() {
         return id;
+    }
+
+    @JsonIgnore
+    public List<Ticket> getTickets() {
+        return tickets;
     }
 
     public void setId(int id) {

@@ -60,4 +60,11 @@ public class TicketServiceImpl implements TicketService {
                 .orElseThrow(() -> new RuntimeException("Ticket not found"));
         return new ArrayList<>(ticket.getEmployees());
     }
+
+    @Override
+    public List<Ticket> getTicketsForEmployee(int employeeId) {
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+        return employee.getTickets();
+    }
 }

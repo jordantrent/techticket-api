@@ -48,4 +48,10 @@ public class TicketRestController {
         List<Employee> employees = ticketService.getEmployeesForTicket(ticketId);
         return ResponseEntity.ok(employees);
     }
+
+    @GetMapping("/tickets/employee/{employeeId}")
+    public ResponseEntity<List<Ticket>> getTicketsForEmployee(@PathVariable int employeeId) {
+        List<Ticket> tickets = ticketService.getTicketsForEmployee(employeeId);
+        return ResponseEntity.ok(tickets);
+    }
 }
