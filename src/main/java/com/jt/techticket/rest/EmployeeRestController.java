@@ -3,9 +3,11 @@ package com.jt.techticket.rest;
 import com.jt.techticket.dao.EmployeeRepository;
 import com.jt.techticket.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -35,9 +37,35 @@ public class EmployeeRestController {
         return employeeRepository.save(employee);
     }
 
-    @PutMapping("/employees")
-    public Employee updateEmployee(@RequestBody Employee employee) {
-        return employeeRepository.save(employee);
+    @PutMapping("/employees/{id}")
+    public ResponseEntity<Employee> updateEmployee(@PathVariable int id, @RequestBody Map<String, Object> updates) {
+        return employeeRepository.findById(id)
+                .map(existingEmployee -> {
+                    // Only update the fields that are in the map
+                    if (updates.containsKey("firstName")) {
+                        existingEmployee.setFirstName((String) updates.get("firstName"));
+                    }
+                    if (updates.containsKey("lastName")) {
+                        existingEmployee.setLastName((String) updates.get("lastName"));
+                    }
+                    if (updates.containsKey("position")) {
+                        existingEmployee.setPosition((String) updates.get("position"));
+                    }
+                    if (updates.containsKey("phone")) {
+                        existingEmployee.setPhone((String) updates.get("phone"));
+                    }
+                    if (updates.containsKey("email")) {
+                        existingEmployee.setEmail((String) updates.get("email"));
+                    }
+                    if (updates.containsKey("photo")) {
+                        existingEmployee.setPhoto((String) updates.get("photo"));
+                    }
+
+                    // Save the updated employee object
+                    Employee updatedEmployee = employeeRepository.save(existingEmployee);
+                    return ResponseEntity.ok(updatedEmployee);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/employees/{employeeId}")

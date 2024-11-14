@@ -22,15 +22,18 @@ public class Employee {
     private String phone;
     @Column(name = "Email")
     private String email;
+    @Column(name = "Photo")
+    private String photo;
     @ManyToMany(mappedBy = "employees", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private List<Ticket> tickets;
 
-    public Employee(String firstName, String lastName, String position, String phone, String email) {
+    public Employee(String firstName, String lastName, String position, String phone, String email, String photo) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.position = position;
         this.phone = phone;
         this.email = email;
+        this.photo = photo;
     }
 
     public Employee() {}
@@ -88,6 +91,14 @@ public class Employee {
         this.email = email;
     }
 
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
@@ -97,6 +108,7 @@ public class Employee {
                 ", position='" + position + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
+                ", photo='" + photo + '\'' +
                 '}';
     }
 }
