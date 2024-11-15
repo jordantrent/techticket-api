@@ -1,5 +1,6 @@
 package com.jt.techticket.service;
 
+import com.jt.techticket.entity.Customer;
 import com.jt.techticket.entity.Ticket;
 import com.jt.techticket.entity.Employee;
 
@@ -14,5 +15,6 @@ public interface TicketService {
     public Ticket assignEmployeesToTicket(int ticketId, List<Integer> employeeIds);
     public List<Employee> getEmployeesForTicket(int ticketId);
     public List<Ticket> getTicketsForEmployee(int employeeId);
+    public Customer getCustomerForTicket(int ticketId);
 
 }

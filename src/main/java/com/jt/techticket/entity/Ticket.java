@@ -84,6 +84,10 @@ public class Ticket {
         return createdDate;
     }
 
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
+    }
+
     public LocalDate getResolvedDate() {
         return resolvedDate;
     }
@@ -94,6 +98,14 @@ public class Ticket {
 
     public String getImagePath() {
         return imagePath;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public void setImagePath(String imagePath) {

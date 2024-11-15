@@ -1,7 +1,9 @@
 package com.jt.techticket.service;
 
+import com.jt.techticket.dao.CustomerRepository;
 import com.jt.techticket.dao.EmployeeRepository;
 import com.jt.techticket.dao.TicketRepository;
+import com.jt.techticket.entity.Customer;
 import com.jt.techticket.entity.Employee;
 import com.jt.techticket.entity.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +15,15 @@ import java.util.List;
 @Service
 public class TicketServiceImpl implements TicketService {
 
+    private final CustomerRepository customerRepository;
     TicketRepository ticketRepository;
     EmployeeRepository employeeRepository;
 
     @Autowired
-    public TicketServiceImpl(TicketRepository ticketRepository, EmployeeRepository employeeRepository) {
+    public TicketServiceImpl(TicketRepository ticketRepository, EmployeeRepository employeeRepository, CustomerRepository customerRepository) {
         this.ticketRepository = ticketRepository;
         this.employeeRepository = employeeRepository;
+        this.customerRepository = customerRepository;
     }
 
     @Override
@@ -66,5 +70,12 @@ public class TicketServiceImpl implements TicketService {
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
         return employee.getTickets();
+    }
+
+    @Override
+    public Customer getCustomerForTicket(int ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+        return ticket.getCustomer();
     }
 }

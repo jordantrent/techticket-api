@@ -41,7 +41,7 @@ public class EmployeeRestController {
     public ResponseEntity<Employee> updateEmployee(@PathVariable int id, @RequestBody Map<String, Object> updates) {
         return employeeRepository.findById(id)
                 .map(existingEmployee -> {
-                    // Only update the fields that are in the map
+
                     if (updates.containsKey("firstName")) {
                         existingEmployee.setFirstName((String) updates.get("firstName"));
                     }
@@ -61,7 +61,7 @@ public class EmployeeRestController {
                         existingEmployee.setPhoto((String) updates.get("photo"));
                     }
 
-                    // Save the updated employee object
+
                     Employee updatedEmployee = employeeRepository.save(existingEmployee);
                     return ResponseEntity.ok(updatedEmployee);
                 })

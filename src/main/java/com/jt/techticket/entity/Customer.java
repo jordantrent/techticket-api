@@ -1,4 +1,5 @@
 package com.jt.techticket.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class Customer {
 
     public Customer() {
     }
-
+    @JsonIgnore
     public List<Ticket> getTickets() {
         return tickets;
     }
