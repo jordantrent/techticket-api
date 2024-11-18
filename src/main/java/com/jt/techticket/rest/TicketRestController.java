@@ -1,6 +1,7 @@
 package com.jt.techticket.rest;
 
 import com.jt.techticket.dao.CustomerRepository;
+import com.jt.techticket.dao.EmployeeRepository;
 import com.jt.techticket.dao.TicketRepository;
 import com.jt.techticket.entity.Customer;
 import com.jt.techticket.entity.Employee;
@@ -22,12 +23,14 @@ public class TicketRestController {
     private TicketService ticketService;
     private TicketRepository ticketRepository;
     private CustomerRepository customerRepository;
+    private EmployeeRepository employeeRepository;
 
     @Autowired
-    public TicketRestController(TicketService ticketService, TicketRepository ticketRepository, CustomerRepository customerRepository) {
+    public TicketRestController(TicketService ticketService, TicketRepository ticketRepository, CustomerRepository customerRepository, EmployeeRepository employeeRepository) {
         this.ticketService = ticketService;
         this.ticketRepository = ticketRepository;
         this.customerRepository = customerRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     @PostMapping("/tickets")
@@ -78,6 +81,7 @@ public class TicketRestController {
         return ticketRepository.findById(id)
                 .map(existingTicket -> {
 
+                    // Check and update various fields
                     if (updates.containsKey("issueDescription")) {
                         existingTicket.setIssueDescription((String) updates.get("issueDescription"));
                     }
@@ -93,10 +97,20 @@ public class TicketRestController {
                     if (updates.containsKey("imagePath")) {
                         existingTicket.setImagePath((String) updates.get("imagePath"));
                     }
+
+                    // Update the list of employees assigned to the ticket
+                    if (updates.containsKey("employees")) {
+                        List<Integer> employeeIds = (List<Integer>) updates.get("employees");
+                        List<Employee> employees = employeeRepository.findAllById(employeeIds);
+                        existingTicket.setEmployees(employees);
+                    }
+
+                    // Save the updated ticket
                     Ticket updatedTicket = ticketRepository.save(existingTicket);
                     return ResponseEntity.ok(updatedTicket);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
 
 }
