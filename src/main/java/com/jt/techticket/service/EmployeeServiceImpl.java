@@ -2,6 +2,7 @@ package com.jt.techticket.service;
 
 import com.jt.techticket.dao.EmployeeRepository;
 import com.jt.techticket.entity.Employee;
+import com.jt.techticket.entity.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

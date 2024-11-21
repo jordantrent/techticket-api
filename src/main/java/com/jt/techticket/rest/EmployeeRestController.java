@@ -1,8 +1,11 @@
 package com.jt.techticket.rest;
 
 import com.jt.techticket.dao.EmployeeRepository;
+import com.jt.techticket.dao.TicketRepository;
 import com.jt.techticket.entity.Employee;
+import com.jt.techticket.entity.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,10 +18,12 @@ import java.util.Optional;
 public class EmployeeRestController {
 
     EmployeeRepository employeeRepository;
+    TicketRepository ticketRepository;
 
     @Autowired
-    public EmployeeRestController(EmployeeRepository employeeRepository) {
+    public EmployeeRestController(EmployeeRepository employeeRepository, TicketRepository ticketRepository) {
         this.employeeRepository = employeeRepository;
+        this.ticketRepository = ticketRepository;
     }
 
     @GetMapping("/employees")
@@ -35,6 +40,26 @@ public class EmployeeRestController {
     public Employee addEmployee(@RequestBody Employee employee) {
         employee.setId(0);
         return employeeRepository.save(employee);
+    }
+
+    @PutMapping("/employees/{id}/unassign-tickets")
+    public ResponseEntity<String> unassignTickets(@PathVariable int id) {
+
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+        List<Ticket> tickets = ticketRepository.findByEmployees_Id((int) id);
+
+        if (tickets.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No tickets found for this employee");
+        }
+        tickets.forEach(ticket -> ticket.getEmployees().remove(employee));
+
+        ticketRepository.saveAll(tickets);
+        employeeRepository.save(employee);
+
+        return ResponseEntity.ok("Tickets unassigned successfully");
     }
 
     @PutMapping("/employees/{id}")

@@ -112,5 +112,15 @@ public class TicketRestController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @DeleteMapping("/tickets/{id}")
+    public String deleteTicket(@PathVariable int id) {
+        ticketRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ticket id not found - " + id));
+
+        ticketRepository.deleteById(id);
+
+        return "ticket customer id - " + id;
+    }
+
 
 }
