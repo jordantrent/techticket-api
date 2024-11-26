@@ -11,7 +11,7 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CustomerID")
-    private int id;
+    private int id; // TODO Is there a reason you didn't just call this customerId to keep your objects consistent with your database?
 
     @Column(name = "Name")
     private String name;

@@ -8,9 +8,11 @@ import java.util.List;
 @Table(name="employees")
 public class Employee {
 
+    //   TODO Space between fields in this file is inconsistent with your other files. Maybe consider something like sonarlint to help you keep things consistent across your project.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "EmployeeID")
+    // TODO Is there a reason you didn't just call this employeeId to keep your objects consistent with your database?
     private int id;
     @Column(name = "FirstName")
     private String firstName;

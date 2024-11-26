@@ -20,9 +20,10 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class TicketRestController {
 
+//    TODO these can be final fields
     private TicketService ticketService;
     private TicketRepository ticketRepository;
-    private CustomerRepository customerRepository;
+    private CustomerRepository customerRepository; // TODO not used
     private EmployeeRepository employeeRepository;
 
     @Autowired
