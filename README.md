@@ -1,28 +1,27 @@
-# TechTicket Frontend
+# TechTicket Backend
 
-This repository contains the **frontend** for the TechTicket project, a job management and ticketing application designed for maintenance companies.
+This repository contains the **backend** for the TechTicket project, a job management and ticketing application designed for maintenance companies.
 
-The frontend is built with **Next.js**, styled with **ShadCN**. It connects to the backend APIs to manage customers, tickets and employee details.
+The backend is built with **Spring Boot** and provides APIs for managing customers, tickets, employees, and materials. It integrates with a MySQL database and AWS services for image uploads and hosting.
 
 ---
 
 ## Features
 
-- **Modern UI**: Minimalist and responsive design using ShadCN components.
-- **Customer Management**: View and manage customer information.
-- **Ticket Management**: Interact with tickets and employee assignments
-- **Employee Details**: View and edit employee data.
-- **Google Maps API**: (Planned) Providing routing for employees.
-- **Employee App**: (Planned) Employee app for consuming tickets.
+- **RESTful APIs**: Exposes endpoints for customers, tickets, employees, and materials.
+- **Database Integration**: MySQL with JPA for efficient data management.
+- **Image Upload**: Uses a Lambda functions and Amazon S3 for storing ticket images.
+- **Secure Authentication** (Planned): Spring Security with OAuth 2.0 for modern authentication.
 
 ---
 
 ## Tech Stack
 
-- **Framework**: Next.js (React-based)
-- **UI Library**: ShadCN
-- **Table Management**: TanStack Table
-- **Backend Integration**: API calls to the Spring Boot backend
+- **Backend Framework**: Spring Boot
+- **Database**: MySQL
+- **Storage**: Amazon S3
+- **Hosting**: Amazon EC2
+- **Containerization**: Docker
 
 ---
 
@@ -30,27 +29,25 @@ The frontend is built with **Next.js**, styled with **ShadCN**. It connects to t
 
 ### Prerequisites
 
-- Node.js 18+
-- Access to the TechTicket backend API (See [TechTicket Backend](https://github.com/jtrent90/techticketui-nextjs))
+- Java 17+
+- MySQL database
+- Maven
 
 ### Steps
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/jtrent/techticketui-nextjs.git
-   cd techticketui-nextjs
+   git clone https://github.com/your-org/techticket-backend.git
+   cd techticket-backend
 
-2. Install dependencies:
+2. Configure the database in application.properties:
    ```bash
-   npm install
+   spring.datasource.url=jdbc:mysql://localhost:3306/techticket
+   spring.datasource.username=your_db_username
+   spring.datasource.password=your_db_password
 
-3. Create an .env.local for environment variables:
+3. Run the application:
    ```bash
-   API_URL=http://localhost:8080/api
+   ./mvn spring-boot:run
 
-4. Start the development server:
-   ```bash
-   npm run dev
-
-5. Open the app in your browser: http://locahost:3000
-
+4. Access the API at http://localhost:8080
