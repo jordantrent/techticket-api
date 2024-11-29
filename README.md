@@ -37,8 +37,8 @@ The backend is built with **Spring Boot** and provides APIs for managing custome
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-org/techticket-backend.git
-   cd techticket-backend
+   git clone https://github.com/your-org/techticket-api.git
+   cd techticket-api
 
 2. Configure the database in application.properties:
    ```bash
