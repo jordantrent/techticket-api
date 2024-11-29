@@ -1,19 +1,56 @@
-# README
+# TechTicket Frontend
 
-All repos need a README! You can find lots of examples online - but don't worry about it being too fancy. Just make sure
-it's clear what your project is, how to run it locally and how to deploy it.
+This repository contains the **frontend** for the TechTicket project, a job management and ticketing application designed for maintenance companies.
 
-## Some thoughts
+The frontend is built with **Next.js**, styled with **ShadCN**. It connects to the backend APIs to manage customers, tickets and employee details.
 
-### DB
+---
 
-- Your live database is in the git history, look into how to remove a commit from the history - you might get away with
-  just squashing those commit.
-- It is also publicly accessible as shown in the png I've added. You want to lock your database down behind some
-  security groups so it is only accessible by your container instance.
+## Features
 
-### Code
+- **Modern UI**: Minimalist and responsive design using ShadCN components.
+- **Customer Management**: View and manage customer information.
+- **Ticket Management**: Interact with tickets and employee assignments
+- **Employee Details**: View and edit employee data.
+- **Google Maps API**: (Planned) Providing routing for employees.
+- **Employee App**: (Planned) Employee app for consuming tickets.
 
-- package Config should be lowercase
-- Maybe consider something like Lombok to reduce boilerplate code in your POJOs (Plain Old Java Objects)
-- Maybe consider something like sonarlint to help with code quality and make sure to format all your files consistently
+---
+
+## Tech Stack
+
+- **Framework**: Next.js (React-based)
+- **UI Library**: ShadCN
+- **Table Management**: TanStack Table
+- **Backend Integration**: API calls to the Spring Boot backend
+
+---
+
+## Installation & Setup
+
+### Prerequisites
+
+- Node.js 18+
+- Access to the TechTicket backend API (See [TechTicket Backend](https://github.com/jtrent90/techticketui-nextjs))
+
+### Steps
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/jtrent/techticketui-nextjs.git
+   cd techticketui-nextjs
+
+2. Install dependencies:
+   ```bash
+   npm install
+
+3. Create an .env.local for environment variables:
+   ```bash
+   API_URL=http://localhost:8080/api
+
+4. Start the development server:
+   ```bash
+   npm run dev
+
+5. Open the app in your browser: http://locahost:3000
+
