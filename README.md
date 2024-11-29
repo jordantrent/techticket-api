@@ -37,7 +37,7 @@ The backend is built with **Spring Boot** and provides APIs for managing custome
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-org/techticket-api.git
+   git clone https://github.com/jordantrent/techticket-api.git
    cd techticket-api
 
 2. Configure the database in application.properties:
@@ -48,6 +48,6 @@ The backend is built with **Spring Boot** and provides APIs for managing custome
 
 3. Run the application:
    ```bash
-   ./mvn spring-boot:run
+   ./mvnw spring-boot:run
 
 4. Access the API at http://localhost:8080
