@@ -1,8 +1,5 @@
 package com.jt.techticket.rest;
 
-import com.jt.techticket.dao.CustomerRepository;
-import com.jt.techticket.dao.EmployeeRepository;
-import com.jt.techticket.dao.TicketRepository;
 import com.jt.techticket.entity.Customer;
 import com.jt.techticket.entity.Employee;
 import com.jt.techticket.entity.Ticket;
@@ -11,38 +8,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
 public class TicketRestController {
 
-//    TODO these can be final fields
-    private TicketService ticketService;
-    private TicketRepository ticketRepository;
-    private CustomerRepository customerRepository; // TODO not used
-    private EmployeeRepository employeeRepository;
+    private final TicketService ticketService;
 
     @Autowired
-    public TicketRestController(TicketService ticketService, TicketRepository ticketRepository, CustomerRepository customerRepository, EmployeeRepository employeeRepository) {
+    public TicketRestController(TicketService ticketService) {
         this.ticketService = ticketService;
-        this.ticketRepository = ticketRepository;
-        this.customerRepository = customerRepository;
-        this.employeeRepository = employeeRepository;
     }
 
     @PostMapping("/tickets")
     public Ticket addTicket(@RequestBody Ticket ticket) {
-        ticket.setId(0);
-        return ticketRepository.save(ticket);
+        return ticketService.addTicket(ticket);
     }
 
     @GetMapping("/tickets")
     public List<Ticket> getAllTickets() {
-        return ticketRepository.findAll();
+        return ticketService.findAll();
     }
 
 
@@ -67,60 +53,29 @@ public class TicketRestController {
     }
 
     @GetMapping("/tickets/{ticketId}")
-    public Optional<Ticket> getTicketById(@PathVariable int ticketId) {
-        return ticketRepository.findById(ticketId);
+    public Ticket getTicketById(@PathVariable int ticketId) {
+        return ticketService.findById(ticketId);
     }
 
     @GetMapping("/tickets/employee/{employeeId}")
-    public ResponseEntity<List<Ticket>> getTicketsForEmployee(@PathVariable int employeeId) {
-        List<Ticket> tickets = ticketService.getTicketsForEmployee(employeeId);
-        return ResponseEntity.ok(tickets);
+    public List <Ticket> getTicketsForEmployee(@PathVariable int employeeId) {
+        return ticketService.getTicketsForEmployee(employeeId);
     }
 
     @PutMapping("/tickets/{id}")
-    public ResponseEntity<Ticket> updateTicket(@PathVariable int id, @RequestBody Map<String, Object> updates) {
-        return ticketRepository.findById(id)
-                .map(existingTicket -> {
-
-                    // Check and update various fields
-                    if (updates.containsKey("issueDescription")) {
-                        existingTicket.setIssueDescription((String) updates.get("issueDescription"));
-                    }
-                    if (updates.containsKey("status")) {
-                        existingTicket.setStatus((String) updates.get("status"));
-                    }
-                    if (updates.containsKey("createdDate")) {
-                        existingTicket.setCreatedDate(LocalDate.parse((String) updates.get("createdDate")));
-                    }
-                    if (updates.containsKey("resolvedDate")) {
-                        existingTicket.setResolvedDate(LocalDate.parse((String) updates.get("resolvedDate")));
-                    }
-                    if (updates.containsKey("imagePath")) {
-                        existingTicket.setImagePath((String) updates.get("imagePath"));
-                    }
-
-                    // Update the list of employees assigned to the ticket
-                    if (updates.containsKey("employees")) {
-                        List<Integer> employeeIds = (List<Integer>) updates.get("employees");
-                        List<Employee> employees = employeeRepository.findAllById(employeeIds);
-                        existingTicket.setEmployees(employees);
-                    }
-
-                    // Save the updated ticket
-                    Ticket updatedTicket = ticketRepository.save(existingTicket);
-                    return ResponseEntity.ok(updatedTicket);
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Ticket> updateTicket(@PathVariable int id, @RequestBody Ticket ticketDetails) {
+        try {
+            Ticket updatedTicket = ticketService.updateTicket(id, ticketDetails);
+            return ResponseEntity.ok(updatedTicket);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @DeleteMapping("/tickets/{id}")
-    public String deleteTicket(@PathVariable int id) {
-        ticketRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ticket id not found - " + id));
-
-        ticketRepository.deleteById(id);
-
-        return "ticket customer id - " + id;
+    @DeleteMapping("/tickets/{ticketId}")
+    public String deleteEmployee(@PathVariable int ticketId) {
+        ticketService.deleteById(ticketId);
+        return "Deleted customer id - " + ticketId;
     }
 
 

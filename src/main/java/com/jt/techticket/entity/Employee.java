@@ -13,7 +13,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "EmployeeID")
     // TODO Is there a reason you didn't just call this employeeId to keep your objects consistent with your database?
-    private int id;
+    private int employeeId;
     @Column(name = "FirstName")
     private String firstName;
     @Column(name = "LastName")
@@ -40,8 +40,8 @@ public class Employee {
 
     public Employee() {}
 
-    public int getId() {
-        return id;
+    public int getEmployeeId() {
+        return employeeId;
     }
 
     @JsonIgnore
@@ -50,7 +50,7 @@ public class Employee {
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.employeeId = id;
     }
 
     public String getFirstName() {
@@ -104,7 +104,7 @@ public class Employee {
     @Override
     public String toString() {
         return "Employee{" +
-                "id=" + id +
+                "id=" + employeeId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", position='" + position + '\'' +

@@ -1,6 +1,5 @@
 package com.jt.techticket.service;
 
-import com.jt.techticket.dao.CustomerRepository;
 import com.jt.techticket.dao.EmployeeRepository;
 import com.jt.techticket.dao.TicketRepository;
 import com.jt.techticket.entity.Customer;
@@ -8,6 +7,7 @@ import com.jt.techticket.entity.Employee;
 import com.jt.techticket.entity.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +15,13 @@ import java.util.List;
 @Service
 public class TicketServiceImpl implements TicketService {
 
-    private final CustomerRepository customerRepository;
     TicketRepository ticketRepository;
     EmployeeRepository employeeRepository;
 
     @Autowired
-    public TicketServiceImpl(TicketRepository ticketRepository, EmployeeRepository employeeRepository, CustomerRepository customerRepository) {
+    public TicketServiceImpl(TicketRepository ticketRepository, EmployeeRepository employeeRepository) {
         this.ticketRepository = ticketRepository;
         this.employeeRepository = employeeRepository;
-        this.customerRepository = customerRepository;
     }
 
     @Override
@@ -38,14 +36,13 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public void save(Ticket ticket) {
-        this.ticketRepository.save(ticket);
+    public void deleteById(int id) {
+        this.ticketRepository.deleteById(id);
     }
 
     @Override
-    public void deleteById(int id) {
-        this.ticketRepository.deleteById(id);
-
+    public Ticket addTicket(Ticket ticket) {
+        return ticketRepository.save(ticket);
     }
 
     @Override
@@ -77,5 +74,35 @@ public class TicketServiceImpl implements TicketService {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new RuntimeException("Ticket not found"));
         return ticket.getCustomer();
+    }
+
+    //TODO: currently unsure if these update methods work 100% as intended, they are WIP.
+    @Transactional
+    public Ticket updateTicket(int ticketId, Ticket ticketDetails) {
+        Ticket existingTicket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
+
+        if (ticketDetails.getIssueDescription() != null && !ticketDetails.getIssueDescription().isEmpty()) {
+            existingTicket.setIssueDescription(ticketDetails.getIssueDescription());
+        }
+        if (ticketDetails.getStatus() != null && !ticketDetails.getStatus().isEmpty()) {
+            existingTicket.setStatus(ticketDetails.getStatus());
+        }
+        if (ticketDetails.getCreatedDate() != null) {
+            existingTicket.setCreatedDate(ticketDetails.getCreatedDate());
+        }
+        if (ticketDetails.getResolvedDate() != null) {
+            existingTicket.setResolvedDate(ticketDetails.getResolvedDate());
+        }
+        if (ticketDetails.getImagePath() != null && !ticketDetails.getImagePath().isEmpty()) {
+            existingTicket.setImagePath(ticketDetails.getImagePath());
+        }
+
+        if (ticketDetails.getEmployees() != null && !ticketDetails.getEmployees().isEmpty()) {
+            List<Employee> employees = ticketDetails.getEmployees();
+            existingTicket.setEmployees(employees);
+        }
+
+        return ticketRepository.save(existingTicket);
     }
 }

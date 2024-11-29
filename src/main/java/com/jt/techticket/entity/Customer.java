@@ -11,7 +11,7 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CustomerID")
-    private int id; // TODO Is there a reason you didn't just call this customerId to keep your objects consistent with your database?
+    private int customerId;
 
     @Column(name = "Name")
     private String name;
@@ -46,12 +46,12 @@ public class Customer {
         this.tickets = tickets;
     }
 
-    public int getId() {
-        return id;
+    public int getCustomerId() {
+        return customerId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int customerId) {
+        this.customerId = customerId;
     }
 
     public String getName() {
@@ -89,7 +89,7 @@ public class Customer {
     @Override
     public String toString() {
         return "Customer{" +
-                "id=" + id +
+                "id=" + customerId +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +

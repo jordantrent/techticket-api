@@ -4,15 +4,17 @@ import com.jt.techticket.dao.CustomerRepository;
 import com.jt.techticket.entity.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
-// TODO this isn't actually used at all??
+//TODO: I will add validation at some point!
+
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
+
     @Autowired
     public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
@@ -23,19 +25,44 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findAll();
     }
 
-    @Override
-    public Customer findById(int id) {
-        return customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Did not find customer id - " + id));
+    @Transactional
+    public Customer addCustomer(Customer customer) {
+        return customerRepository.save(customer);
     }
 
     @Override
-    public void save(Customer customer) {
-        this.customerRepository.save(customer);
+    public Customer findById(int customerId) {
+        return customerRepository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("Did not find customer id - " + customerId));
     }
 
     @Override
-    public void deleteById(int id) {
-        this.customerRepository.deleteById(id);
+    public void deleteById(int customerId) {
+        customerRepository.deleteById(customerId);
     }
+
+    //TODO: currently unsure if these update methods work 100% as intended, they are WIP.
+    @Transactional
+    public Customer updateCustomer(int customerId, Customer customerDetails) {
+
+        Customer existingCustomer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("Customer not found with id: " + customerId));
+
+        if (customerDetails.getName() != null && !customerDetails.getName().isEmpty()) {
+            existingCustomer.setName(customerDetails.getName());
+        }
+        if (customerDetails.getAddress() != null && !customerDetails.getAddress().isEmpty()) {
+            existingCustomer.setAddress(customerDetails.getAddress());
+        }
+        if (customerDetails.getPhone() != null && !customerDetails.getPhone().isEmpty()) {
+            existingCustomer.setPhone(customerDetails.getPhone());
+        }
+        if (customerDetails.getEmail() != null && !customerDetails.getEmail().isEmpty()) {
+            existingCustomer.setEmail(customerDetails.getEmail());
+        }
+
+        return customerRepository.save(existingCustomer);
+    }
+
+
 }

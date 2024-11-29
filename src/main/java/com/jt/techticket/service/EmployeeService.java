@@ -1,7 +1,6 @@
 package com.jt.techticket.service;
 
 import com.jt.techticket.entity.Employee;
-import com.jt.techticket.entity.Ticket;
 
 import java.util.List;
 
@@ -9,7 +8,9 @@ public interface EmployeeService {
 
     public List<Employee> findAll();
     public Employee findById(int id);
-    public void save(Employee employee);
+    public Employee addEmployee(Employee employee);
     public void deleteById(int id);
+    public void unassignTickets(int employeeId);
+    public Employee updateEmployee(int employeeId, Employee employee);
 
 }
