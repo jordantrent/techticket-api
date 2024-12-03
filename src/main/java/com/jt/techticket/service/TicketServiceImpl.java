@@ -99,7 +99,10 @@ public class TicketServiceImpl implements TicketService {
         }
 
         if (ticketDetails.getEmployees() != null && !ticketDetails.getEmployees().isEmpty()) {
-            List<Employee> employees = ticketDetails.getEmployees();
+            List<Employee> employees = ticketDetails.getEmployees().stream()
+                    .map(employee -> employeeRepository.findById(employee.getEmployeeId())
+                            .orElseThrow(() -> new RuntimeException("Employee not found with id: " + employee.getEmployeeId())))
+                    .toList();
             existingTicket.setEmployees(employees);
         }
 
