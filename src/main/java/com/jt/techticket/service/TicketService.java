@@ -10,11 +10,12 @@ public interface TicketService {
 
     public List<Ticket> findAll();
     public Ticket findById(int id);
-    public void save(Ticket customer);
     public void deleteById(int id);
+    public Ticket addTicket(Ticket ticket);
     public Ticket assignEmployeesToTicket(int ticketId, List<Integer> employeeIds);
     public List<Employee> getEmployeesForTicket(int ticketId);
     public List<Ticket> getTicketsForEmployee(int employeeId);
     public Customer getCustomerForTicket(int ticketId);
+    public Ticket updateTicket(int ticketId, Ticket ticket);
 
 }

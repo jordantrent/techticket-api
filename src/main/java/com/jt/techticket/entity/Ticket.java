@@ -13,7 +13,7 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="TicketID")
-    private int id;
+    private int ticketId;
 
     @Column(name="IssueDescription")
     private String issueDescription;
@@ -48,8 +48,8 @@ public class Ticket {
         this.imagePath = imagePath;
     }
 
-    public int getId() {
-        return id;
+    public int getTicketId() {
+        return ticketId;
     }
 
     public List<Employee> getEmployees() {
@@ -60,8 +60,8 @@ public class Ticket {
         this.employees = employees;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setTicketId(int ticketId) {
+        this.ticketId = ticketId;
     }
 
     public String getIssueDescription() {
