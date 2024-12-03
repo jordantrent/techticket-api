@@ -98,13 +98,34 @@ public class TicketServiceImpl implements TicketService {
             existingTicket.setImagePath(ticketDetails.getImagePath());
         }
 
+//        if (ticketDetails.getEmployees() != null && !ticketDetails.getEmployees().isEmpty()) {
+//            List<Employee> employees = ticketDetails.getEmployees().stream()
+//                    .map(employee -> employeeRepository.findById(employee.getEmployeeId())
+//                            .orElseThrow(() -> new RuntimeException("Employee not found with id: " + employee.getEmployeeId())))
+//                    .toList();
+//            existingTicket.setEmployees(employees);
+//        }
+
         if (ticketDetails.getEmployees() != null && !ticketDetails.getEmployees().isEmpty()) {
-            List<Employee> employees = ticketDetails.getEmployees().stream()
-                    .map(employee -> employeeRepository.findById(employee.getEmployeeId())
-                            .orElseThrow(() -> new RuntimeException("Employee not found with id: " + employee.getEmployeeId())))
+            List<Integer> employeeIds = ticketDetails.getEmployees().stream()
+                    .map(Employee::getEmployeeId)
                     .toList();
+
+            List<Employee> employees = employeeRepository.findAllById(employeeIds);
+
+            if (employees.size() != employeeIds.size()) {
+                List<Integer> foundIds = employees.stream()
+                        .map(Employee::getEmployeeId)
+                        .toList();
+                List<Integer> missingIds = employeeIds.stream()
+                        .filter(id -> !foundIds.contains(id))
+                        .toList();
+                throw new RuntimeException("Employees not found with IDs: " + missingIds);
+            }
+
             existingTicket.setEmployees(employees);
         }
+
 
         return ticketRepository.save(existingTicket);
     }
