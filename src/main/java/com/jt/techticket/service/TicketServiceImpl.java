@@ -101,25 +101,6 @@ public class TicketServiceImpl implements TicketService {
             existingTicket.setImagePath(ticketDetails.getImagePath());
         }
 
-//        if (ticketDetails.getEmployees() != null && !ticketDetails.getEmployees().isEmpty()) {
-//            List<Employee> employees = ticketDetails.getEmployees().stream()
-//                    .map(employee -> employeeRepository.findById(employee.getEmployeeId())
-//                            .orElseThrow(() -> new RuntimeException("Employee not found with id: " + employee.getEmployeeId())))
-//                    .toList();
-//            existingTicket.setEmployees(employees);
-//        }
-
-        if (ticketDetails.getEmployees() != null && !ticketDetails.getEmployees().isEmpty()) {
-            List<Integer> employeeIds = ticketDetails.getEmployees().stream()
-                    .map(Employee::getEmployeeId)
-                    .toList();
-
-            List<Employee> employees = employeeRepository.findAllById(employeeIds);
-
-            existingTicket.setEmployees(employees);
-        }
-
-
         return ticketRepository.save(existingTicket);
     }
 }
