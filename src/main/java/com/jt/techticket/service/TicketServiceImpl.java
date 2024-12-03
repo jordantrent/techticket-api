@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TicketServiceImpl implements TicketService {
@@ -51,8 +52,17 @@ public class TicketServiceImpl implements TicketService {
                 .orElseThrow(() -> new RuntimeException("Did not find ticket id - " + ticketId));
 
         List<Employee> employees = employeeRepository.findAllById(employeeIds);
-        ticket.getEmployees().addAll(employees);
-        return ticketRepository.save(ticket);
+
+        List<Employee> newEmployees = employees.stream()
+                .filter(employee -> !ticket.getEmployees().contains(employee))
+                .toList();
+
+        if (!newEmployees.isEmpty()) {
+            ticket.getEmployees().addAll(newEmployees);
+            return ticketRepository.save(ticket);
+        }
+
+        throw new RuntimeException("All selected employees are already assigned to the ticket.");
     }
 
     @Override
@@ -112,16 +122,6 @@ public class TicketServiceImpl implements TicketService {
                     .toList();
 
             List<Employee> employees = employeeRepository.findAllById(employeeIds);
-
-            if (employees.size() != employeeIds.size()) {
-                List<Integer> foundIds = employees.stream()
-                        .map(Employee::getEmployeeId)
-                        .toList();
-                List<Integer> missingIds = employeeIds.stream()
-                        .filter(id -> !foundIds.contains(id))
-                        .toList();
-                throw new RuntimeException("Employees not found with IDs: " + missingIds);
-            }
 
             existingTicket.setEmployees(employees);
         }
