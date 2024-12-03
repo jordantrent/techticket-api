@@ -50,19 +50,12 @@ public class TicketServiceImpl implements TicketService {
     public Ticket assignEmployeesToTicket(int ticketId, List<Integer> employeeIds) {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new RuntimeException("Did not find ticket id - " + ticketId));
-
         List<Employee> employees = employeeRepository.findAllById(employeeIds);
 
-        List<Employee> newEmployees = employees.stream()
-                .filter(employee -> !ticket.getEmployees().contains(employee))
-                .toList();
+        ticket.getEmployees().clear();
+        ticket.getEmployees().addAll(employees);
 
-        if (!newEmployees.isEmpty()) {
-            ticket.getEmployees().addAll(newEmployees);
-            return ticketRepository.save(ticket);
-        }
-
-        throw new RuntimeException("All selected employees are already assigned to the ticket.");
+        return ticketRepository.save(ticket);
     }
 
     @Override
