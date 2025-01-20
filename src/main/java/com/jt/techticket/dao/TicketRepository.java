@@ -14,4 +14,5 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
 
     @Query("SELECT COUNT(t) FROM Ticket t WHERE SIZE(t.employees) = 0")
     long countUnassignedTickets();
+
 }

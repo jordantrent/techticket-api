@@ -117,4 +117,13 @@ public class TicketServiceImpl implements TicketService {
 
         return response;
     }
+
+    @Override
+    public List<Ticket> getInProgressTickets() {
+        List<Ticket> allTickets = ticketRepository.findAll();
+        return allTickets.stream()
+                .filter(ticket -> "In Progress".equals(ticket.getStatus()))
+                .collect(Collectors.toList());
+    }
+
 }

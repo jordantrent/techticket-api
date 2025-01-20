@@ -19,5 +19,6 @@ public interface TicketService {
     public Customer getCustomerForTicket(int ticketId);
     public Ticket updateTicket(int ticketId, Ticket ticket);
     public Map<String, Long> getTicketCounts();
+    public List<Ticket> getInProgressTickets();
 
 }

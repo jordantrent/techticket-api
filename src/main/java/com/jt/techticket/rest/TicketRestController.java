@@ -85,5 +85,10 @@ public class TicketRestController {
         return ResponseEntity.ok(counts);
     }
 
+    @GetMapping("/in-progress")
+    public List<Ticket> getInProgressTickets() {
+        return ticketService.getInProgressTickets();
+    }
+
 
 }
