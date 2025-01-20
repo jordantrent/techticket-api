@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -102,5 +104,17 @@ public class TicketServiceImpl implements TicketService {
         }
 
         return ticketRepository.save(existingTicket);
+    }
+
+    @Override
+    public Map<String, Long> getTicketCounts() {
+        long assigned = ticketRepository.countAssignedTickets();
+        long unassigned = ticketRepository.countUnassignedTickets();
+
+        Map<String, Long> response = new HashMap<>();
+        response.put("assigned", assigned);
+        response.put("unassigned", unassigned);
+
+        return response;
     }
 }

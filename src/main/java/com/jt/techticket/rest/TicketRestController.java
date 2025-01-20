@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -76,6 +77,12 @@ public class TicketRestController {
     public String deleteEmployee(@PathVariable int ticketId) {
         ticketService.deleteById(ticketId);
         return "Deleted customer id - " + ticketId;
+    }
+
+    @GetMapping("/counts")
+    public ResponseEntity<Map<String, Long>> getTicketCounts() {
+        Map<String, Long> counts = ticketService.getTicketCounts();
+        return ResponseEntity.ok(counts);
     }
 
 

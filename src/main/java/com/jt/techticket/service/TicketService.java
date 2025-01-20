@@ -5,6 +5,7 @@ import com.jt.techticket.entity.Ticket;
 import com.jt.techticket.entity.Employee;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TicketService {
 
@@ -17,5 +18,6 @@ public interface TicketService {
     public List<Ticket> getTicketsForEmployee(int employeeId);
     public Customer getCustomerForTicket(int ticketId);
     public Ticket updateTicket(int ticketId, Ticket ticket);
+    public Map<String, Long> getTicketCounts();
 
 }
